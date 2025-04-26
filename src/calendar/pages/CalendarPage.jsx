@@ -39,8 +39,6 @@ export const CalendarPage = () => {
     openDateModal();
   };
   const onSelect = (event) => {
-    console.log(event);
-
     setActiveElement(event);
   };
 
