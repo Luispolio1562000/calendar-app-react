@@ -1,5 +1,11 @@
 export const CalendarEvent = (props) => {
-  console.log(props);
+  //? Log de las props que envia el evento del calendario.
+  //* console.log(props.event.title);
 
-  return <div>CalendarEvent</div>;
+  return (
+    <>
+      <strong>{props.event.title}</strong>
+      <span>{props.event.name}</span>
+    </>
+  );
 };
