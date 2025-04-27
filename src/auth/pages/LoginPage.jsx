@@ -13,13 +13,40 @@ export const LoginPage = () => {
     registerPassword: "",
     registerPassword2: "",
   };
+  const loginFormValidations = {
+    loginEmail: [(value) => value.includes("@"), "Email debe tener @"],
+    loginPassword: [
+      (value) => value.length >= 6,
+      "Password debe tener al menos 6 caracteres",
+    ],
+  };
+
+  const registerFormValidations = {
+    registerName: [
+      (value) => value.length >= 3,
+      "Nombre debe tener al menos 3 caracteres",
+    ],
+    registerEmail: [(value) => value.includes("@"), "Email debe tener @"],
+    registerPassword: [
+      (value) => value.length >= 6,
+      "Password debe tener al menos 6 caracteres",
+    ],
+    registerPassword2: [
+      (value) => value.length >= 6,
+      "Password debe tener al menos 6 caracteres",
+    ],
+    matchPassword: [
+      (value) => value === registerFormFields.registerPassword,
+      "Las contraseñas deben ser iguales",
+    ],
+  };
 
   const {
     loginEmail,
     loginPassword,
     onInputChange: onLoginChange,
     formState: loginFormState,
-  } = useForm(loginFormFields);
+  } = useForm(loginFormFields, loginFormValidations);
   const {
     registerName,
     registerEmail,
@@ -27,7 +54,7 @@ export const LoginPage = () => {
     registerPassword2,
     onInputChange: onRegisterChange,
     formState: registerFormState,
-  } = useForm(registerFormFields);
+  } = useForm(registerFormFields, registerFormValidations);
 
   const loginSubmit = (event) => {
     event.preventDefault();
@@ -51,6 +78,7 @@ export const LoginPage = () => {
                 type="text"
                 className="form-control"
                 placeholder="Correo"
+                s
                 name="loginEmail"
                 value={loginEmail}
                 onChange={onLoginChange}
