@@ -1,7 +1,10 @@
-import { useForm } from "../../hooks";
+import { useForm, useAuthStore } from "../../hooks";
+
 import "./LoginPage.css";
 
 export const LoginPage = () => {
+  const { startLogin } = useAuthStore();
+
   const loginFormFields = {
     loginEmail: "",
     loginPassword: "",
@@ -16,7 +19,7 @@ export const LoginPage = () => {
   const loginFormValidations = {
     loginEmail: [(value) => value.includes("@"), "Email debe tener @"],
     loginPassword: [
-      (value) => value.length >= 6,
+      (value) => value.trim().length >= 6,
       "Password debe tener al menos 6 caracteres",
     ],
   };
@@ -45,7 +48,7 @@ export const LoginPage = () => {
     loginEmail,
     loginPassword,
     onInputChange: onLoginChange,
-    formState: loginFormState,
+    isFormValid: isLoginFormValid,
   } = useForm(loginFormFields, loginFormValidations);
   const {
     registerName,
@@ -58,8 +61,7 @@ export const LoginPage = () => {
 
   const loginSubmit = (event) => {
     event.preventDefault();
-    console.log(loginFormState);
-    // Aquí implementarías la lógica de login
+    startLogin(loginEmail, loginPassword);
   };
   const registerSubmit = (event) => {
     event.preventDefault();
@@ -78,10 +80,10 @@ export const LoginPage = () => {
                 type="text"
                 className="form-control"
                 placeholder="Correo"
-                s
                 name="loginEmail"
                 value={loginEmail}
                 onChange={onLoginChange}
+                autoComplete="username"
               />
             </div>
             <div className="form-group mb-2">
@@ -92,10 +94,16 @@ export const LoginPage = () => {
                 name="loginPassword"
                 value={loginPassword}
                 onChange={onLoginChange}
+                autoComplete="current-password"
               />
             </div>
             <div className="form-group mb-2">
-              <input type="submit" className="btnSubmit" value="Login" />
+              <input
+                type="submit"
+                className="btnSubmit"
+                value="Login"
+                disabled={!isLoginFormValid}
+              />
             </div>
           </form>
         </div>
@@ -121,6 +129,7 @@ export const LoginPage = () => {
                 name="registerEmail"
                 value={registerEmail}
                 onChange={onRegisterChange}
+                autoComplete="email"
               />
             </div>
             <div className="form-group mb-2">
@@ -131,6 +140,7 @@ export const LoginPage = () => {
                 name="registerPassword"
                 value={registerPassword}
                 onChange={onRegisterChange}
+                autoComplete="new-password"
               />
             </div>
 
@@ -142,11 +152,17 @@ export const LoginPage = () => {
                 name="registerPassword2"
                 value={registerPassword2}
                 onChange={onRegisterChange}
+                autoComplete="new-password"
               />
             </div>
 
             <div className="form-group mb-2">
-              <input type="submit" className="btnSubmit" value="Crear cuenta" />
+              <input
+                type="submit"
+                className="btnSubmit"
+                value="Crear cuenta"
+                disabled={!registerFormState.isFormValid}
+              />
             </div>
           </form>
         </div>
