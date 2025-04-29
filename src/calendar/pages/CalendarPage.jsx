@@ -7,7 +7,7 @@ import {
   NavBar,
   FabDelete,
 } from "../components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getMessagesES, localizer } from "../../helpers";
 import { useUiStore } from "../../hooks";
 import { useCalendarStore } from "../../hooks";
@@ -26,7 +26,11 @@ const evenlyStyleGetter = () => {
 };
 
 export const CalendarPage = () => {
-  const { events, setActiveElement } = useCalendarStore();
+  const { events, setActiveElement, startLoadingEvents } = useCalendarStore();
+  useEffect(() => {
+    startLoadingEvents();
+  }, []);
+
   const { openDateModal } = useUiStore();
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastView") || "week"
