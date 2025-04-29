@@ -80,8 +80,7 @@ export const CalendarModal = () => {
       Swal.fire("Se requiere un título", "Ingresar titulo", "warning");
       return;
     }
-    console.log(formValues);
-    await startSavingEvent(formValues);
+    await startSavingEvent({ ...formValues });
     closeDateModal();
     setFormSubmited(false);
     //TODO: Cerrar modal

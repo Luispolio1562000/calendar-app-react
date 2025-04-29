@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useForm, useAuthStore } from "../../hooks";
 
 import "./LoginPage.css";
+import Swal from "sweetalert2";
 
 export const LoginPage = () => {
-  const { startLogin } = useAuthStore();
+  const { startLogin, startRegister, errorMessage } = useAuthStore();
 
   const loginFormFields = {
     loginEmail: "",
@@ -65,9 +67,24 @@ export const LoginPage = () => {
   };
   const registerSubmit = (event) => {
     event.preventDefault();
-    console.log(registerFormState);
-    // Aquí implementarías la lógica de registro
+    console.log(!registerFormState.isFormValid);
+    if (registerPassword !== registerPassword2) {
+      Swal.fire(
+        "Error en registro",
+        "Las contraseñas deben ser iguales",
+        "error"
+      );
+      return;
+    }
+
+    startRegister(registerName, registerEmail, registerPassword);
   };
+
+  useEffect(() => {
+    if (errorMessage !== undefined) {
+      Swal.fire("Error en login", errorMessage, "error");
+    }
+  }, [errorMessage]);
 
   return (
     <div className="container login-container">
@@ -157,12 +174,7 @@ export const LoginPage = () => {
             </div>
 
             <div className="form-group mb-2">
-              <input
-                type="submit"
-                className="btnSubmit"
-                value="Crear cuenta"
-                disabled={!registerFormState.isFormValid}
-              />
+              <input type="submit" className="btnSubmit" value="Crear cuenta" />
             </div>
           </form>
         </div>

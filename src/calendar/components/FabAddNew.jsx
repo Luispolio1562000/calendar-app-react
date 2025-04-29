@@ -7,10 +7,6 @@ const newEvent = {
   start: new Date(),
   end: addHours(new Date(), 2),
   bgColor: "#fafafa",
-  user: {
-    _id: "123",
-    name: "Luis",
-  },
 };
 export const FabAddNew = () => {
   const { openDateModal } = useUiStore();
