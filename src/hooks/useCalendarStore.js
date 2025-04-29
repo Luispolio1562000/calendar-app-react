@@ -23,8 +23,22 @@ export const useCalendarStore = () => {
     dispatch(onClearActiveEvent());
   };
 
-  const deleteEvent = () => {
-    dispatch(startDeleteEvent());
+  const deleteEvent = async () => {
+    try {
+      const resp = await calendarApi.delete(
+        `/events/event/${activeElement.id}`
+      );
+
+      if (resp.status !== 200) {
+        Swal.fire("Eliminado", resp.data.msg, "warning");
+        return;
+      }
+      Swal.fire("Eliminado", resp.data.msg, "success");
+      dispatch(startDeleteEvent());
+    } catch (error) {
+      console.error("Error eliminando el evento:", error);
+      Swal.fire("Error al eliminar", error.response.data.msg, "error");
+    }
   };
 
   const startSavingEvent = async (calendarEvent) => {

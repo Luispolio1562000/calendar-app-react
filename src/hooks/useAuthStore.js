@@ -4,6 +4,7 @@ import {
   onClearErrorMessage,
   onLogin,
   onLogout,
+  onLogoutCalendar,
 } from "../store";
 import calendarApi from "../apis/calendarApi";
 import { useNavigate } from "react-router";
@@ -98,8 +99,9 @@ export const useAuthStore = () => {
   const startLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("token-init-date");
-    navigate("/auth/login", { replace: true });
+    dispatch(onLogoutCalendar());
     dispatch(onLogout());
+    navigate("/auth/login", { replace: true });
   };
 
   return {

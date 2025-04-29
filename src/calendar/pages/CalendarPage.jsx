@@ -11,26 +11,29 @@ import { useEffect, useState } from "react";
 import { getMessagesES, localizer } from "../../helpers";
 import { useUiStore } from "../../hooks";
 import { useCalendarStore } from "../../hooks";
-
-const evenlyStyleGetter = () => {
-  const style = {
-    backgroundColor: "#347CF7",
-    borderRadius: "0px",
-    opacity: 0.8,
-    color: "white",
-  };
-
-  return {
-    style,
-  };
-};
+import { useSelector } from "react-redux";
 
 export const CalendarPage = () => {
+  const { user } = useSelector((state) => state.auth);
   const { events, setActiveElement, startLoadingEvents } = useCalendarStore();
   useEffect(() => {
     startLoadingEvents();
   }, []);
 
+  const evenlyStyleGetter = (event, start, end, isSelected) => {
+    const isMyEvent = user.uid === event.user._id;
+    const style = {
+      backgroundColor: isMyEvent ? "red" : "black",
+      borderRadius: "0px",
+      opacity: 0.7,
+      color: "white",
+      fontWeight: "lighter",
+    };
+
+    return {
+      style,
+    };
+  };
   const { openDateModal } = useUiStore();
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastView") || "week"
